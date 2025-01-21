@@ -5,7 +5,7 @@ int main(int argc, char** argv)
 {
 	// Making two instances (or object) of the Person class
 	Person p(42, "Bob", "Jones");		// using the "real" constructor
-	Person q;		// using the default constructor
+	Person q;						    // using the default constructor
 
 	//p.id = 42;
 	//p.hours_worked = 17;

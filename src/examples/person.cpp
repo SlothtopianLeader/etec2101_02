@@ -24,7 +24,7 @@ void Person::set_hours_worked(unsigned int new_hours)
 
 int Person::get_id()
 {
-	return 0;
+	return id;
 }
 
 std::string Person::get_first_name()
@@ -37,10 +37,14 @@ std::string Person::get_last_name()
 	return last_name;
 }
 
-
-float Person::set_hourly_rate()
+float Person::get_hourly_rate()
 {
 	return hourly_rate;
+}
+
+unsigned int Person::get_hours_worked()
+{
+	return hours_worked;
 }
 
 Person::Person()
