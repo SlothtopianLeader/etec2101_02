@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 	std::string s;
 	std::cout << "x = " << x << "\n";
 
-	std::cout << "Enter a value for x:";
+	std::cout << "Enter a value for x: ";
 	std::cin >> x;							// Note how chevrons go to the right
 	if (std::cin.fail())
 	{
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 	// FILE INPUT
 	std::ifstream fp("..\\..\\media\\test.txt");
 
-	if (!fp.is_open());
+	if (!fp.is_open())
 	{
 		std::cout << "Error opening ..\\..\media\\test.txt \n";
 		return 1;
