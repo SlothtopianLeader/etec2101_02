@@ -28,6 +28,12 @@ public:
 	// This is ANOTHER CONSTRUCTOR
 	Person(int start_id, std::string start_fname, std::string start_lname);
 
+	// This is the DESTRUCTOR. This is called when an instance is about to go "away",
+	// This method gets called. It is unusual to call this manually. More often, it's
+	// called when an instance goes out of scope (scope is where that variable is visible, or
+	// is defined).  Do any kind of cleanup you wish.  Biggie: if you dynamically allocated
+	// any memory, this is a good place to clean it up.
+	~Person();
 
 	// This if a METHOD -- a function that all instances of the class can
 	// use. This is a DECLARATION.
