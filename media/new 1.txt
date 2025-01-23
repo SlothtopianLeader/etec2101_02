@@ -1,0 +1,88 @@
+#include <person.h>
+
+namespace example
+{
+	/// DOCUMENT ME
+	class PersonDatabase
+	{
+		// DOCUMENT ME
+		Person* person_array;
+		
+		/// DOCUMENT ME!
+		unsigned int person_array_size; 	// like "n" on slide 16
+		
+		/// DOCUMENT ME!
+		PersonDatabase(std::string fname);
+		
+		/// DOCUMENT ME
+		void add_person(Person new_person);
+	};
+}
+
+// person_database.cpp
+#include <person_database.h>
+
+void example::Person::add_person(example::Person new_person)
+{
+	// See slide 16
+	
+	// If the array is empty (nullptr), allocate (with new) the
+	// array to be of size 1 and out new_person in the only spot.
+	
+	// If the array is NOT empty, do this:
+	// - Make sure new_person's ID is NOT a duplicate of any existing person's ID
+			for(int i=0; i<person_array_size; i++)
+			{
+				if(*(person_array + i))
+				if (person_array[i].get_id() == new_person.get_id())
+				{
+					std::string err_msg = "Duplicate id" + std::to_string(new_person.get_id());
+					throw std::runtime_error(err_msg);
+				}
+			}
+	// - Make a temporary array (with new) that's one bigger
+	// - Copy all data from existing person_array to the bigger array
+	// - Put new_person in the last spot in the array
+	// - Free up the old smaller array
+	// - Make person_array hold the address of the bigger array
+}
+
+example::PersonDatabase::PersonDatabase(std::string fname)
+{
+	// Open the file
+	
+	person_array = nullptr;		// indicates that the array is empty
+	
+	// Loop to read things in
+	while(true)
+	{
+		// Read a line
+		
+		if(fp.eof())
+			break;
+		
+		// Put that data into the array.
+		Person p(new_id, new_fname, new_lname);
+		p.set_hourly_rate(new_rate);
+		p.set_hours_worked(new_hours);
+		add_person(p);
+	}
+}
+
+// main.cpp
+int main()
+{
+	PersonDatabase DB("../../media/person_database.txt");
+	
+	DB.add_person(Person(42, "Bob", "Smith"));
+	
+	// We can OPTIONALLY handle the exception
+	try
+	{
+		DB.add_person(Person(42, "Sally", "Dobbs"));		// generates an exception
+	}
+	catch (std::runtime_error e)
+	{
+		std::cout << "Error caught" << e.what()
+	}
+}
