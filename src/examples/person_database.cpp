@@ -2,13 +2,20 @@
 #include <person_database.h>
 #include <iostream>
 
+int person_array_size = 0;
 //General structure:	ReturnType ClassName::MethodName(PARAMETERS) { .... }
 
-
-float example::Person::calculate_pay()
+void example::Person::add_person(example::Person new_person)
 {
-	// We have access to all attributes since we're a part of the class
-	return hourly_rate * hours_worked;
+	for (int i = 0; i < person_array_size; i++)
+	{
+		if(*(person_array + i))
+			if (person_array[i].get_id() == new_person.get_id())
+			{
+				std::string err_msg = "Duplicated id" + std::to_string(new_person.get_id());
+				throw std::runtime_error(err_msg);
+			}
+	}
 }
 
 void example::Person::set_hourly_rate(float new_rate)

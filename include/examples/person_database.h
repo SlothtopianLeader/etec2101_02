@@ -1,6 +1,6 @@
 // #pragma once			// does the same compiler guard as below
-#ifndef _PERSON_H_		// "compiler guard" -- makes sure this
-#define _PERSON_H_		//	 header filer (and the stuff within it...our
+#ifndef _PERSON_DATABASE_H_		// "compiler guard" -- makes sure this
+#define _PERSON_DATABASE_H_		//	 header filer (and the stuff within it...our
 						//	 class declaration) is only seen once by the
 						//	 compiler
 

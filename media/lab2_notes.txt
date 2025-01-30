@@ -1,0 +1,66 @@
+// arrray_list.h
+
+namespace ssuds
+{
+	// A general purpose container that can hold pretty much any data and that presents
+	template <class T>
+	class ArrayList
+	{
+	private:
+		/// ?
+		T* mData;					// The array of values -- always has the used spots first,
+									//	 then the excess capacity comes after.
+		unsigned int mCapacity; 	// Always matches array size
+		unsigned int mSize;			// How many spots are used.
+		
+	public:
+		ArrayList()
+		{
+			// Make the array of some small size (5 is what I'll use). Capaci
+			mCapacity = 5;
+			mData = new T[mCapacity];
+			mSize = 0;
+		}
+		
+		/// Adds a new value to the end of the ArrayList
+		void append(T new_value);
+		{
+			// Do an array "grow" operation if size == capacity.  DOUBLE the array (and use the
+			// 	other lab1-style grow operation techniques)
+			// Put new_value in the last spot in the array
+			// Increases mSize value.
+		}
+		
+		/// Adds a new value to the beginning of the ArrayList
+		void prepend(T new_value);
+		{
+			// Do an array "grow" operation if size == capacity. DOUBLE the array (and
+			//		maybe use the other lab1-style grow operation techniques)
+			// We will always have to do a shifting operation to move items up one index
+			// and then put new_value at index 0
+			// Increases mSize value.
+		}
+		
+		/// Gets the number of elements being stored in the ArrayList
+		unsigned int size();
+		{
+			
+		}
+	};
+}
+
+
+
+// lab02_main.cpp
+#include <array_list.h>
+
+int main(int argc, char** argv)
+{
+	ssuds::ArrayList<int> ilist;
+	ilist.append(15);
+	ilist.append(16);
+	ilist.append(14);
+	ilist.append(13);
+	
+	ssuds::ArrayList<std::string> 
+}

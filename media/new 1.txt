@@ -1,5 +1,8 @@
 #include <person.h>
 
+person_array = 0;
+person_array_size = 0;
+
 namespace example
 {
 	/// DOCUMENT ME
