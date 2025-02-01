@@ -82,11 +82,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\examples\person.cpp" />
+    <ClCompile Include="..\..\src\examples\person_database.cpp" />
     <ClCompile Include="lab01.cpp" />
-    <ClCompile Include="person_database.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="person_database.h" />
+    <ClInclude Include="..\..\include\examples\person.h" />
+    <ClInclude Include="..\..\include\examples\person_database.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

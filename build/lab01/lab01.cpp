@@ -41,34 +41,20 @@ int main(int argc, char** argv)
 	std::cout << "s now equals '" << s << "'\n";
 
 	// FILE OUTPUT
-	std::ofstream fp("..\\..\\media\\test.txt");		// o=output (text-file by default)
+	std::ofstream fp("..\\..\\media\\person_database.txt");		// o=output (text-file by default)
 	fp << "This is a line\n";			// Just like cout!!
 	fp << "x = " << x << "\n";
 	fp << "And we're done!\n";
 	fp.close();
 #else
 	// FILE INPUT
-	std::ifstream fp("..\\..\\media\\test.txt");
+	std::ifstream fp("..\\..\\media\\person_database.txt");
 
 	if (!fp.is_open())
 	{
-		std::cout << "Error opening ..\\..\media\\test.txt \n";
+		std::cout << "Error opening ..\\..\media\\person_database.txt \n";
 		return 1;
 	}
-
-	/*std::string temp_line;
-	std::getline(fp, temp_line);
-	std::cout << "Line0=" << temp_line << "\n";
-
-	// Line2 is of the form "x = 99" -- how to get the number?
-	fp.ignore(4, '\n');
-	int real_x;
-	fp >> real_x;
-	fp.ignore(1000, '\n');
-	std::cout << "got x's value of " << real_x << "\n";
-
-	std::getline(fp, temp_line);
-	std::cout << "Line2" << temp_line << "\n";*/
 
 	// Read in all data from the file
 	int new_id;

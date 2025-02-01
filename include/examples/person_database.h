@@ -5,6 +5,10 @@
 						//	 compiler
 
 #include <string>
+#include <person.h>
+
+int person_array = 0;
+int person_array_size = 0;
 
 namespace example
 {
@@ -13,7 +17,7 @@ namespace example
 	/// a couple projects (PeronDatabase) and as a test of a "complex"
 	/// things (as opposed to int's, float's, strings)
 	/// </summary>
-	class Person
+	class PersonDatabase
 	{
 		// These are ATTRIBUTES -- variables that each instance of the class
 		// gets a copy of.
@@ -24,11 +28,22 @@ namespace example
 		/// <summary>
 		/// This is the (unique) ID# of this Person
 		/// </summary>
-		int id;
-		std::string first_name;
-		std::string last_name;
-		float hourly_rate;
-		unsigned int hours_worked;
+		Person* person_array;
+
+		/// <summary>
+		/// This holds the amount of people we have in our array
+		/// </summary>
+		unsigned int person_array_size;
+
+		/// <summary>
+		/// This
+		/// </summary>
+		/// <param name="fname"></param>
+		PersonDatabase(std::string fname);
+
+		//PersonDatabase(std::string lname);
+
+		void add_person(Person new_person);
 
 	public:
 		// This is the CONSTRUCTOR -- a method that has no return type and MUST
