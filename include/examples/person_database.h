@@ -5,10 +5,8 @@
 						//	 compiler
 
 #include <string>
-#include <person.h>
+#include "person.h"
 
-int person_array = 0;
-int person_array_size = 0;
 
 namespace example
 {
@@ -34,59 +32,23 @@ namespace example
 		/// This holds the amount of people we have in our array
 		/// </summary>
 		unsigned int person_array_size;
+		std::string filename;
+
+	public:
 
 		/// <summary>
 		/// This
 		/// </summary>
 		/// <param name="fname"></param>
 		PersonDatabase(std::string fname);
-
-		//PersonDatabase(std::string lname);
+		~PersonDatabase();
 
 		void add_person(Person new_person);
 
-	public:
-		// This is the CONSTRUCTOR -- a method that has no return type and MUST
-		// have the same name as the class. This is a DEFAULT CONSTRUCTOR (no parameters)
+		bool remove_person(unsigned int id);
 
-		/// <summary>
-		/// This is the DEFAULT CONSTRUCTOR (no parameters), sets id to -1 and names
-		/// to ?
-		/// </summary>
-		Person();
-
-		// This is ANOTHER CONSTRUCTOR
-
-		/// <summary>
-		/// This is the non-default constructor -- mostly initializes all parameters
-		/// based on arguments from the caller
-		/// </summary>
-		/// <param name="start_id">This is the id# for the new Person</param>
-		/// <param name="start_fname">This is the first name for the new Person</param>
-		/// <param name="start_lname">This is the last name for the new Person</param>
-		Person(int start_id, std::string start_fname, std::string start_lname);
-
-		// This is the DESTRUCTOR. This is called when an instance is about to go "away",
-		// This method gets called. It is unusual to call this manually. More often, it's
-		// called when an instance goes out of scope (scope is where that variable is visible, or
-		// is defined).  Do any kind of cleanup you wish.  Biggie: if you dynamically allocated
-		// any memory, this is a good place to clean it up.
-		~Person();
-
-		// This if a METHOD -- a function that all instances of the class can
-		// use. This is a DECLARATION.
-		float calculate_pay();
-
-		// These are examples of SETTERS
-		void set_hourly_rate(float new_rate);
-		void set_hours_worked(unsigned int new_hours);
-
-		// These are examples of GETTERS
-		int get_id();
-		std::string get_first_name();
-		std::string get_last_name();
-		unsigned int get_hours_worked();
-		float get_hourly_rate();
+		int get_num_people();
+		std::string to_string();
 	};
 }
 #endif
