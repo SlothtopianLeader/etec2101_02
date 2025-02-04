@@ -1,0 +1,42 @@
+\doxysection{person\+\_\+database.\+h}
+\hypertarget{person__database_8h_source}{}\label{person__database_8h_source}\index{include/examples/person\_database.h@{include/examples/person\_database.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ \#pragma\ once\ \ \ \ \ \ \ \ \ //\ does\ the\ same\ compiler\ guard\ as\ below}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ \_PERSON\_DATABASE\_H\_\ \ \ \ \ }\textcolor{comment}{//\ "{}compiler\ guard"{}\ -\/-\/\ makes\ sure\ this}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ \_PERSON\_DATABASE\_H\_\ \ \ \ \ }\textcolor{comment}{//\ \ \ header\ filer\ (and\ the\ stuff\ within\ it...our}}
+\DoxyCodeLine{00004\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ class\ declaration)\ is\ only\ seen\ once\ by\ the}}
+\DoxyCodeLine{00005\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ compiler}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}person.h"{}}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }example}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classexample_1_1_person_database_a5845e87cbf0ef0dc90192020a9dfd8b9}{PersonDatabase}}}
+\DoxyCodeLine{00019\ \ \ \ \ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ These\ are\ ATTRIBUTES\ -\/-\/\ variables\ that\ each\ instance\ of\ the\ class}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ a\ copy\ of.}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ By\ default\ all\ members\ of\ a\ class\ are\ PRIVATE\ (we\ can\ only}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ access\ them\ in\ a\ method).\ Normally\ we\ make\ our\ attributes\ private}}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ but\ methods\ public.}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classexample_1_1_person}{Person}}*\ person\_array;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ person\_array\_size;}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ std::string\ filename;}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classexample_1_1_person_database_a5845e87cbf0ef0dc90192020a9dfd8b9}{PersonDatabase}}(std::string\ fname);}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classexample_1_1_person_database_a84558db880f925669f94925eb06ea1e2}{\string~PersonDatabase}}();}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classexample_1_1_person_database_ad577f6af394e62fd024149d3b2159cb9}{add\_person}}(\mbox{\hyperlink{classexample_1_1_person}{Person}}\ new\_person);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classexample_1_1_person_database_a831835c506fa66d02deb9e16db7145de}{remove\_person}}(\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classexample_1_1_person_database_a795f12313afb929807ed49ddf0986023}{get\_num\_people}}();}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ std::string\ \mbox{\hyperlink{classexample_1_1_person_database_ad4c45ca3c7c3f83e94f43c0df0cbb55a}{to\_string}}();}
+\DoxyCodeLine{00069\ \ \ \ \ \};}
+\DoxyCodeLine{00070\ \}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
