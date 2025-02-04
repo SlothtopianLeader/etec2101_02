@@ -28,6 +28,8 @@ int main(int argc, char** argv)
 		{
 			int id;
 			std::string fname, lname;
+			float hourly_rate;
+			unsigned int hours_worked;
 
 			std::cout << "Enter ID: ";
 			std::cin >> id;
@@ -35,14 +37,23 @@ int main(int argc, char** argv)
 			std::cin >> fname;
 			std::cout << "Enter Last Name: ";
 			std::cin >> lname;
-			try
+			std::cout << "Enter Hourly Rate: ";
+			std::cin >> hourly_rate;
+			std::cout << "Enter Hours Worked: ";
+			std::cin >> hours_worked;
+
+			example::Person new_person(id, fname, lname, hourly_rate, hours_worked);
+			DB.add_person(new_person);
+
+			std::cout << "Person added successfully\n";
+			/*	try
 			{
 				DB.add_person(example::Person(42, "Bob", "Smith"));
 			}
 			catch (std::runtime_error e)
 			{
 				std::cout << "Error caught" << e.what() << "\n";
-			}
+			}*/
 		}
 
 		else if (option == 2)	// Remove
@@ -67,7 +78,6 @@ int main(int argc, char** argv)
 		else
 			std::cout << "Invalid number.\n";
 	}
-	//fp.close();
 
 	return 0;
 }

@@ -50,6 +50,7 @@ namespace example {
 		return hours_worked;
 	}
 
+	
 	example::Person::Person()
 	{
 		id = -1;
@@ -58,14 +59,14 @@ namespace example {
 		hours_worked = 0;
 		hourly_rate = 0.0f;
 	}
-
-	example::Person::Person(int start_id, std::string start_fname, std::string start_lname)
+	
+	example::Person::Person(int start_id, std::string start_fname, std::string start_lname, float start_rate, unsigned int start_hours)
 	{
 		id = start_id;
 		first_name = start_fname;
 		last_name = start_lname;
-		hours_worked = 0;
-		hourly_rate = 0.0f;
+		hours_worked = start_rate;
+		hourly_rate = start_hours;
 	}
 
 	example::Person::~Person()

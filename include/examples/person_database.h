@@ -37,17 +37,34 @@ namespace example
 	public:
 
 		/// <summary>
-		/// This
+		/// This is the PersonDatabase constructor
 		/// </summary>
 		/// <param name="fname"></param>
 		PersonDatabase(std::string fname);
+		/// <summary>
+		/// This is the PersonDatabase destructor
+		/// </summary>
 		~PersonDatabase();
-
+		/// <summary>
+		/// This adds a new Person to the database
+		/// </summary>
+		/// <param name="new_person"></param>
 		void add_person(Person new_person);
-
+		/// <summary>
+		/// This removes a Person from the database
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		bool remove_person(unsigned int id);
-
+		/// <summary>
+		/// This returns the amount of people within the database
+		/// </summary>
+		/// <returns></returns>
 		int get_num_people();
+		/// <summary>
+		/// This returns a string, in this case our report
+		/// </summary>
+		/// <returns></returns>
 		std::string to_string();
 	};
 }

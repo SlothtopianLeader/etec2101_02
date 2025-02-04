@@ -111,8 +111,8 @@ namespace example {
 	std::string PersonDatabase::to_string()
 	{
 		std::stringstream ss;
-		ss << "Person ID	Hours	Rate	Monthly Salary\n";
-		ss << "=========	=====	====	==============\n";
+		ss << "Person	ID	Hours	Rate	Monthly Salary\n";
+		ss << "=======	==	=====	====	==============\n";
 
 		float total_salary = 0.0;
 		for (unsigned int i = 0; i < person_array_size; i++)
@@ -120,13 +120,13 @@ namespace example {
 			float salary = person_array[i].calculate_pay();
 			total_salary += salary;
 
-			ss << person_array[i].get_first_name() << " " << person_array[i].get_last_name() << " "
-				<< person_array[i].get_id() << " "
-				<< person_array[i].get_hours_worked() << " "
-				<< "$" << person_array[i].get_hourly_rate() << " "
+			ss << person_array[i].get_first_name() << " " << person_array[i].get_last_name() << "\t"
+				<< person_array[i].get_id() << "\t"
+				<< person_array[i].get_hours_worked() << "\t"
+				<< "$" << person_array[i].get_hourly_rate() << "\t"
 				<< "$" << salary << "\n";
 		}
-		ss << "==========================================\n";
+		ss << "==============================================\n";
 		ss << "Total: $" << total_salary << "\n";
 
 		return ss.str();
