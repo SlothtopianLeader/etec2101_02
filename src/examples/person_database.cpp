@@ -29,7 +29,7 @@ namespace example {
 			unsigned int hours;
 
 			ss >> id >> fname >> lname >> rate >> hours;
-			add_person(Person(id, fname, lname, hours, rate));
+			add_person(Person(id, fname, lname, rate, hours));
 		}
 
 		file.close();
@@ -78,7 +78,7 @@ namespace example {
 		int index = -1;
 		for (unsigned int i = 0; i < person_array_size; i++)
 		{
-			if (person_array_size[i].get_id() == id)
+			if (person_array[i].get_id() == id)
 			{
 				index = i;
 				break;
@@ -129,6 +129,6 @@ namespace example {
 		ss << "==========================================\n";
 		ss << "Total: $" << total_salary << "\n";
 
-		return std::string();
+		return ss.str();
 	}
 }

@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 			std::cin >> lname;
 			try
 			{
-				DB.add_person(Person(42, "Bob", "Smith"));
+				DB.add_person(example::Person(42, "Bob", "Smith"));
 			}
 			catch (std::runtime_error e)
 			{

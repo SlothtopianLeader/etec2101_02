@@ -51,6 +51,9 @@ namespace example
 		/// <param name="start_lname">This is the last name for the new Person</param>
 		Person(int start_id, std::string start_fname, std::string start_lname);
 
+		//Person(int start_id, std::string start_fname, std::string start_lname, float start_rate, unsigned int start_hours);
+
+
 		// This is the DESTRUCTOR. This is called when an instance is about to go "away",
 		// This method gets called. It is unusual to call this manually. More often, it's
 		// called when an instance goes out of scope (scope is where that variable is visible, or
