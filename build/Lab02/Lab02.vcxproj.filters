@@ -23,11 +23,5 @@
     <ClInclude Include="array_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="person.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="person_database.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
