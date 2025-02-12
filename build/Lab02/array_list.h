@@ -75,41 +75,105 @@ namespace ssuds
 
 		const int append(ArrayList new_array_list)
 		{
-			for (unsigned int i = 0; i < mArray_size; i++)
+			if (mArray == nullptr)
 			{
-				if (mArray_size == mArray_capacity)
+				mArray = new Person[1];
+			}
+			else
+			{
+				for (unsigned int i = 0; i < mArraySize; i++)
 				{
-
+					if (mArray[i].get_id() == p.get_id())
+						throw std::runtime_error("Person with id " + std::to_string(p.get_id()) + " already exists!");
 				}
-				ArrayList* new_array = new ArrayList[mArray_size + 1];
 
-				for (unsigned int i = 0; i < mArray_size; i++)
-					// Add some content here.
+				Person* temp_array = new Person[mArraySize + 1];
+
+				for (unsigned int i = 0; i < mArraySize; i++)
+					temp_array[i] = mArray[i];
+
+				delete[] mArray;
+				mArray = temp_array;
 			}
+
+			mArray[mArraySize] = p;
+
+			++mArraySize;
 		}
-		/*
-		void PersonDatabase::add_person(Person new_person)
+
+		const int prepend()
 		{
-			for (unsigned int i = 0; i < person_array_size; i++)
+			if (mArray == nullptr)
 			{
-				if (person_array[i].get_id() == new_person.get_id())
-					throw std::runtime_error("Error: Duplicate ID. Please enter a valid ID.");
+				mArray = new Person[1];
 			}
-			Person* new_array = new Person[person_array_size + 1];
+			else
+			{
+				for (unsigned int i = 0; i < mArraySize; i++)
+				{
+					if (mArray[i].get_id() == p.get_id())
+						throw std::runtime_error("Person with id " + std::to_string(p.get_id()) + " already exists!");
+				}
 
-			for (unsigned int i = 0; i < person_array_size; i++)
-				new_array[i] = person_array[i];
+				Person* temp_array = new Person[mArraySize + 1];
 
-			new_array[person_array_size] = new_person;
+				for (unsigned int i = 0; i < mArraySize; i++)
+					temp_array[i + 1] = mArray[i];
 
-			delete[] person_array;
-			person_array = new_array;
-			person_array_size++;
+				delete[] mArray;
+				mArray = temp_array;
+			}
+
+			mArray[mArraySize] = p;
+
+			++mArraySize;
 		}
-		*/
-		const int prepend();
-		const int insert();
-		int at();
+
+		const int insert(unsigned int index)
+		{
+			if (mArray == nullptr)
+			{
+				mArray = new Person[1];
+			}
+			else
+			{
+				for (unsigned int i = 0; i < mArraySize; i++)
+				{
+					if (mArray[i].get_id() == p.get_id())
+						throw std::runtime_error("Person with id " + std::to_string(p.get_id()) + " already exists!");
+				}
+
+				Person* temp_array = new Person[mArraySize + 1];
+
+				if (index == mArray_size)		// Append
+				{ 
+					for (unsigned int i = 0; i < mArraySize; i++)
+						temp_array[i] = mArray[i];
+				}
+				if (index == 0)					// Prepend
+				{
+					for (unsigned int i = 0; i < mArraySize; i++)
+						temp_array[i + 1] = mArray[i];
+				}
+
+				delete[] mArray;
+				mArray = temp_array;
+			}
+
+			mArray[mArraySize] = p;
+
+			++mArraySize;
+		}
+
+		int& at(unsigned int& index)
+		{
+			/*An at method that takes an index and returns a reference to the item 
+			at that spot. The get method should do bounds checking and return a 
+			std::out_of_range error if an invalid index is passed. Note by returning 
+			a reference, we allow the user to change the item at that spot 
+			(so no setter method is needed)*/
+			return index;
+		}
 		std::string output();
 		bool remove(unsigned int index);
 		const bool remove_all(unsigned int index);
