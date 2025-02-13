@@ -2,16 +2,25 @@
 //
 
 #include <iostream>
-#include <string>
 #include "array_list.h"
 
-int main(int argc, char** argv)
+int main()
 {
-    ssuds::ArrayList<int> ilist;
-    ilist.append(15);
-    ilist.append(16);
-    ilist.prepend(14);
-    ilist.prepend(13);
+	ssuds::ArrayList<float> float_list;
 
-    ssuds::ArrayList<std::string> slist;
+	std::cout << "test1:\n=====\n";
+	float_list.append(2.1f);
+	float_list.append(3.6f);
+	std::cout << "\tsize=" << float_list.size() << std::endl;
+	std::cout << "\titem0=" << float_list.at(0) << std::endl;
+	std::cout << "\titem1=" << float_list.at(1) << std::endl;
+
+	std::cout << "test2:\n=====\n";
+	float_list.insert(0, 1.8f);
+	float_list.insert(3, 4.3f);
+	float_list.insert(1, 2.0f);
+	for (int i = 0; i < float_list.size(); i++)
+		std::cout << "\titem" << i << "=" << float_list.at(i) << "\n";
+
+	return 0;
 }
