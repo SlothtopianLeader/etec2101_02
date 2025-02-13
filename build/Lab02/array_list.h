@@ -1,5 +1,14 @@
+#ifndef _ARRAY_LIST_H_
+#define _ARRAY_LIST_H_
+
 #include <string>
 
+/*
+References:
+https://www.geeksforgeeks.org/templates-cpp/
+https://www.geeksforgeeks.org/references-in-cpp/
+https://www.tutorialspoint.com/cplusplus/cpp_references.htm
+*/
 // Make all methods of this class const-safe that can be.
 
 namespace ssuds
@@ -48,12 +57,19 @@ namespace ssuds
 			mArray = new T[mArray_capacity];
 		}
 
+		/// <summary>
+		/// This is the array list destructor, which frees the array.
+		/// </summary>
 		~ArrayList()
 		{
 			delete[]mArray;
 		}
 
-
+		/// <summary>
+		/// This is the method will "reserve" space for the
+		/// items that are to be added.
+		/// </summary>
+		/// <param name="newCapacity"></param>
 		void reserve(unsigned int newCapacity)
 		{
 			if (newCapacity <= mArray_capacity)
@@ -72,6 +88,11 @@ namespace ssuds
 			mArray_capacity = newCapacity;
 		}
 
+		/// <summary>
+		/// This is the append method which adds a new item to the
+		/// end of the Array List.
+		/// </summary>
+		/// <param name="item"></param>
 		void append(const T& item)
 		{
 			if (mArray_size == mArray_capacity)
@@ -83,6 +104,11 @@ namespace ssuds
 			++mArray_size;
 		}
 
+		/// <summary>
+		/// This is the prepend method which adds a new item
+		/// to the beginning of the array list.
+		/// </summary>
+		/// <param name="item"></param>
 		void prepend(const T& item)
 		{
 			if (mArray_size == mArray_capacity)
@@ -99,6 +125,13 @@ namespace ssuds
 			++mArray_size;
 		}
 
+		/// <summary>
+		/// This is the insert method which takes the desired
+		/// index and will move the items in the array list to
+		/// make room for the new item.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="item"></param>
 		void insert(unsigned int index, const T& item)
 		{
 			if (index > mArray_size)
@@ -114,6 +147,12 @@ namespace ssuds
 			++mArray_size;
 		}
 
+		/// <summary>
+		/// This is the at method which takes an index and
+		/// it returns a refernece to the item at that spot.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
 		T& at(unsigned int index) const
 		{
 			if (index >= mArray_size)
@@ -121,6 +160,12 @@ namespace ssuds
 			
 			return mArray[index];
 		}
+
+		/// <summary>
+		/// This is the output method which takes a reference to
+		/// the std::ostream object.
+		/// </summary>
+		/// <param name="os"></param>
 		void output(std::ostream& os) const
 		{
 			os << "[";
@@ -133,6 +178,12 @@ namespace ssuds
 			os << "]";
 		}
 
+		/// <summary>
+		/// This is the remove method which takes an 
+		/// index and removes the item at that spot.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
 		T remove(unsigned int index)
 		{
 			if (index >= mArray_size)
@@ -152,6 +203,13 @@ namespace ssuds
 			return removedItem;
 		}
 
+		/// <summary>
+		/// This is a remove_all method that takes a value,
+		/// and removes all occurences, and returns the number
+		/// of occurences removed.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		unsigned int remove_all(const T& value)
 		{
 			unsigned int count = 0;
@@ -168,6 +226,16 @@ namespace ssuds
 			}
 			return count;
 		}
+
+		/// <summary>
+		/// This is the find method which takes an reference
+		/// to a value to find and the starting index. This returns
+		/// the index of the first occurrence of the value, or
+		/// after the given starting index.
+		/// </summary>
+		/// <param name="value"></param>
+		/// <param name="startIndex"></param>
+		/// <returns></returns>
 		int find(const T& value, unsigned int startIndex = 0) const
 		{
 			if (startIndex >= mArray_size)
@@ -183,15 +251,23 @@ namespace ssuds
 		}
 
 
-
-		// These are examples of GETTERS
+		/// <summary>
+		/// This is a Getter method that returns the array size.
+		/// </summary>
+		/// <returns></returns>
 		unsigned int size() const
 		{
 			return mArray_size;
 		}
+		/// <summary>
+		/// This is another Getter method that returns the array capacity.
+		/// </summary>
+		/// <returns></returns>
 		unsigned int capacity() const
 		{
 			return mArray_capacity;
 		}
 	};
 }
+
+#endif
