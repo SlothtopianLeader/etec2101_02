@@ -267,7 +267,18 @@ namespace ssuds
 		{
 			return mArray_capacity;
 		}
+		class ArrayListIterator
+		{
+		private:
+			//etc
+
+		public:
+			//etc
+
+
+		};
 	};
+
 }
 
 #endif
