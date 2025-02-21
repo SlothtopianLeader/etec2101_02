@@ -40,7 +40,7 @@ namespace ssuds
 			mArray = new T[mArray_capacity];
 		}
 
-		
+
 
 		// This is ANOTHER CONSTRUCTOR
 
@@ -51,7 +51,7 @@ namespace ssuds
 		/// <param name="start_id">This is the id# for the new Person</param>
 		/// <param name="start_fname">This is the first name for the new Person</param>
 		/// <param name="start_lname">This is the last name for the new Person</param>
-		
+
 		ArrayList(unsigned int capacity) : mArray_capacity(capacity), mArray_size(0)
 		{
 			mArray = new T[mArray_capacity];
@@ -157,7 +157,7 @@ namespace ssuds
 		{
 			if (index >= mArray_size)
 				throw std::out_of_range("Invalid Index.");
-			
+
 			return mArray[index];
 		}
 
@@ -267,16 +267,6 @@ namespace ssuds
 		{
 			return mArray_capacity;
 		}
-		class ArrayListIterator
-		{
-		private:
-			//etc
-
-		public:
-			//etc
-
-
-		};
 	};
 
 }
