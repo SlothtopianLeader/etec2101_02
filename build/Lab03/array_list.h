@@ -33,6 +33,63 @@ namespace ssuds
 		// @ CONSTRUCTORS / DESTRUCTORS              @
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public:
+		class ArrayListIterator
+		{
+		private:
+			ArrayList* my_array_list;
+			int index;
+
+		public:
+			ArrayListIterator()
+			{
+				my_array_list = nullptr;
+				index = 0;
+			}
+			ArrayListIterator(ArrayList * owning_list, int starting_index)
+			{
+				my_array_list = owning_list;
+				index = starting_index;
+			}
+
+			bool operator != (const ArrayListIterator & rhs)
+			{
+				return my_array_list != rhs.my_array_list || index != rhs.index;
+			}
+
+			ArrayListIterator operator++()
+			{
+				index++;
+
+				for (unsigned int i = index; i < mSize; i++)
+				{
+					if (index > mSize)
+						index = my_array_list;
+				}
+				return index;
+			}
+
+			ArrayListIterator operator++(int dummy)
+			{
+				int tmpThis = this;
+				for (unsigned int i = index; i < mSize; i++)
+				{
+					index++;
+				}
+				return tmpThis;
+			}
+
+			T& operator*()
+			{
+				return my_array_list->at(index);
+			}
+
+			ArrayListIterator operator+(int offset)
+			{
+				return ArrayListIterator(my_array_list, index + offset);
+			}
+		};
+
+
 		/// Default constructor
 		ArrayList() : mSize(0), mCapacity(0), mData(nullptr)
 		{
@@ -56,6 +113,18 @@ namespace ssuds
 		// @ OTHER METHODS (alphabetical)            @
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public:
+		ArrayListIterator begin()
+		{
+			ArrayListIterator return_value(this, 0);
+			return return_value;
+		}
+
+		ArrayListIterator end()
+		{
+			ArrayListIterator return_value;
+			return return_value;
+		}
+
 		/// <summary>
 		///  Inserts a new element at the end of the array
 		/// </summary>
