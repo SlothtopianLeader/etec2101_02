@@ -33,59 +33,94 @@ namespace ssuds
 		// @ CONSTRUCTORS / DESTRUCTORS              @
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public:
+		template <class T>
 		class ArrayListIterator
 		{
 		private:
-			ArrayList* my_array_list;
-			int index;
+			ArrayList<T>* my_array_list;
+			unsigned int index;
 
 		public:
+			/// <summary>
+			/// This is the ArrayListIterator default constructor
+			/// </summary>
 			ArrayListIterator()
 			{
 				my_array_list = nullptr;
 				index = 0;
 			}
-			ArrayListIterator(ArrayList * owning_list, int starting_index)
+			/// <summary>
+			/// This constructor initializes the iterator with a reference to an ArrayList and a starting index.
+			/// </summary>
+			/// <param name="owning_list">A pointer to the ArrayList instance being iterated over</param>
+			/// <param name="starting_index">The index in the ArrayList from where the iterator starts</param>
+			ArrayListIterator(ArrayList<T>* owning_list, int starting_index)
 			{
 				my_array_list = owning_list;
 				index = starting_index;
 			}
 
+			/// <summary>
+			/// This compares two objects to check if they point to different locations in the same list OR different lists.
+			/// </summary>
+			/// <param name="rhs">Object to be compared to.</param>
+			/// <returns>This will return true if the iterators are not equal, and it will return false if the iterators are the same.</returns>
 			bool operator != (const ArrayListIterator & rhs)
 			{
 				return my_array_list != rhs.my_array_list || index != rhs.index;
 			}
-
-			ArrayListIterator operator++()
+			/// <summary>
+			/// This increments the iterator to the next elements in the ArrayList.
+			/// </summary>
+			/// <returns>It returns the updated ArrayListIterator object after incrementing the index.</returns>
+			ArrayListIterator& operator++()
 			{
-				index++;
-
-				for (unsigned int i = index; i < mSize; i++)
-				{
-					if (index > mSize)
-						index = my_array_list;
-				}
-				return index;
-			}
-
-			ArrayListIterator operator++(int dummy)
-			{
-				int tmpThis = this;
-				for (unsigned int i = index; i < mSize; i++)
-				{
+				if (index < my_array_list->mSize)
 					index++;
-				}
-				return tmpThis;
+				return *this;
 			}
-
+			/// <summary>
+			/// This returns a copy of the iterator before incrementing.
+			/// </summary>
+			/// <param name=""></param>
+			/// <returns>It returns a copy of the iterator before the index is incremeneted.</returns>
+			ArrayListIterator operator++(int)
+			{
+				ArrayListIterator temp = *this;
+				if (index < my_array_list->mSize)
+					index++;
+				return temp;
+			}
+			/// <summary>
+			/// This dereferences the iterator to access the element at the current index of the ArrayList.
+			/// </summary>
+			/// <returns>It returns a reference to the element of type T at the current index.</returns>
 			T& operator*()
 			{
 				return my_array_list->at(index);
 			}
-
+			/// <summary>
+			/// This creates and returns a new iterator that points to an element at an offset from the current index.
+			/// </summary>
+			/// <param name="offset">The number of positions to move the iterator forward or backwards.</param>
+			/// <returns></returns>
 			ArrayListIterator operator+(int offset)
 			{
 				return ArrayListIterator(my_array_list, index + offset);
+			}
+			/// <summary>
+			/// This copies the list reference and index.
+			/// </summary>
+			/// <param name="rhs">The ArrayListIterator object to copy from.</param>
+			/// <returns></returns>
+			ArrayListIterator& operator=(const ArrayListIterator& rhs)
+			{
+				if (this != &rhs)
+				{
+					my_array_list = rhs.my_array_list;
+					index = rhs.index;
+				}
+				return *this;
 			}
 		};
 
@@ -161,6 +196,27 @@ namespace ssuds
 			return (T&)(mData[index * sizeof(T)]);
 		}
 
+		/// <summary>
+		/// Returns a reference to the item at the given index. Works just like the previous 'at' method
+		/// but does not do bounds-checking, which makes it slightly faster.
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
+		T& operator[](const unsigned int index) const
+		{
+			return (T&)(mData[index * sizeof(T)]);
+		}
+
+		/*
+		Reference: https://www.geeksforgeeks.org/noexcept-operator-in-cpp-11/
+		*/
+
+		ArrayList(ArrayList&& other) noexcept : mCapacity(other.mCapacity), mSize(other.mSize), mData(other.mData)
+		{
+			other.mCapacity = 0;
+			other.mSize = 0;
+			other.mData = nullptr;
+		}
 
 		/// <summary>
 		/// Returns the current capacity of the ArrayList (this is always

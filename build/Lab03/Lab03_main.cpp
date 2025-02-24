@@ -75,6 +75,36 @@ int main(int argc, char** argv)
     std::cout << "\tsize=" << float_list.size() << "\n";            //     size=4
     std::cout << "\tcapacity=" << float_list.capacity() << "\n";    //     capacity=5
 
+    // Lab 03 tests
+    std::cout << "\ntest7 (default iterator):\n=====\n";
+    ssuds::ArrayList<float>::ArrayListIterator<float> defaultIter;
+    std::cout << "\tdefault iterator created.\n";
+    
+    std::cout << "\ntest8 (parameterized iterator): \n=====\n";
+    ssuds::ArrayList<float>::ArrayListIterator<float> iter(&float_list, 0);
+    std::cout << "\titerator initialized at index 0.\n";
+
+    std::cout << "\ntest9 (copy constructor and assignment operator): \n=====\n";
+    ssuds::ArrayList<float>::ArrayListIterator<float> copyIter(iter);
+    std::cout << "\tcopy constructor used to copy iterator.\n";
+
+    ssuds::ArrayList<float>::ArrayListIterator<float> assignedIter;
+    assignedIter = iter;
+    std::cout << "\tcopy assignment operator has been used.\n";
+
+    /*
+        Reference: https://www.geeksforgeeks.org/exceptionwhat-in-c-with-examples/
+    */
+    std::cout << "\ntest10 (dereference): \n=====\n";
+    try
+    {
+        std::cout << "\tdereferencing iterator: " << *iter << "\n";
+    }
+    catch (const std::exception &e)
+    {
+        std::cout << "\texception caught: " << e.what() << "\n";
+    }
+
 #
     return 0;
 }
