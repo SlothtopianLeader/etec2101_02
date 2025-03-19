@@ -15,21 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab04_main.cpp">
+    <ClCompile Include="array_lists_tests_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WordReader.cpp">
+    <ClCompile Include="array_list_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WordReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="clean_arraylist.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RandomMacros.h">
+    <ClInclude Include="..\Lab03\array_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
