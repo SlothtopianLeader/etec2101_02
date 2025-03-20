@@ -1,6 +1,6 @@
 #pragma once
-#define MIN 25
-#define MAX 50
+#define MIN 65
+#define MAX 85
 #define MIN_SPEED 0.125
 #define MAX_SPEED 0.1
 

@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <ostream>
+#include <random>
 #include "clean_arraylist.h"
 #include "WordReader.h"
 #include "RandomMacros.h"
@@ -19,11 +20,11 @@ private:
 	float circleYVelocity = 0.015625;
 public:
 	TextCircle(sf::Font& the_font) : my_text(the_font),   // <- this : syntax passes the value to
-		my_circle(100.0f), my_bullet(20.0f)
+		my_circle(getRandomSize()), my_bullet(20.0f)
 	{													// the c'tor.
 		my_position = sf::Vector2f(100.0f, 100.0f);
-		//my_circle.setFillColor(getRandomColor());
 		my_circle.setFillColor(RAND_COLOR);
+		// my_circle.setRotation(sf::degrees(110.f));
 
 	}
 
@@ -68,6 +69,14 @@ public:
 	{
 		return sf::Color(rand() % 256, rand() % 256, rand() % 256);
 	}
+
+	sf::CircleShape getRandomSize()
+	{
+		float radius = RAND_RADIUS(MIN, MAX);
+		sf::CircleShape circle(radius);
+		circle.setFillColor(RAND_COLOR);
+		return circle;
+	}
 };
 
 
@@ -91,8 +100,9 @@ int main(int argc, char** argv)
 
 	sf::Texture my_hand_image("..\\..\\media\\hand.png");
 	sf::Sprite my_hand_sprite(my_hand_image);
-	my_hand_sprite.setRotation(sf::degrees(45.0f));
-	my_hand_sprite.setOrigin(sf::Vector2f());
+	my_hand_sprite.setOrigin(sf::Vector2f({100.f, 100.f}));		// X = 100 is top left of hand
+	my_hand_sprite.setPosition(sf::Vector2f(375.0f, 500.0f));
+
 
 	sf::Font my_font("..\\..\\media\\Oswald\\static\\Oswald-Regular.ttf");
 	sf::Text test_text(my_font);
@@ -133,14 +143,43 @@ int main(int argc, char** argv)
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 		for (unsigned int i = 0; i < circle_xvalues.size(); i++)
 		{
-			circle_yvalues[i] += circle_speeds[i];		// for bullet -=0.1f;
-			// each circle needs to have it's own random speed.
-			// maybe between 0.003125 and 0.1f
+			circle_yvalues[i] += circle_speeds[i];
+			if (circle_yvalues[i] >= 600)
+			{
+				circle_xvalues.remove(i);
+				circle_yvalues.remove(i);
+				circle_speeds.remove(i);
+				circle_text.remove(i);
+			}
+		}
+
+		for (int i = circle_xvalues.size() - 1; i >= 0; i--)
+		{
+			for (int j = bullet_xvalues.size() - 1; j >= 0; j--)
+			{
+				float dx = circle_xvalues[i] - bullet_xvalues[j];
+				float dy = circle_yvalues[i] - bullet_yvalues[j];
+				float distance = sqrtf(dx * dx + dy * dy);
+
+				float circle_radius = only_text_circle.get_circle().getRadius();
+				float bullet_radius = only_text_circle.get_bullet().getRadius();
+
+				if (distance <= (circle_radius + bullet_radius))
+				{
+					circle_xvalues.remove(i);
+					circle_yvalues.remove(i);
+					circle_speeds.remove(i);
+					circle_text.remove(i);
+
+					bullet_xvalues.remove(j);
+					bullet_yvalues.remove(j);
+				}
+			}
 		}
 
 		for (unsigned int i = 0; i < bullet_xvalues.size(); i++)
 		{
-			bullet_yvalues[i] += -0.2f;
+			bullet_yvalues[i] -= 0.2f;
 		}
 
 
@@ -179,9 +218,19 @@ int main(int argc, char** argv)
 					float x = buttonEvt->position.x;
 					float y = buttonEvt->position.y;
 
-					bullet_xvalues.append(buttonEvt->position.x);
-					bullet_yvalues.append(buttonEvt->position.y);
+					bullet_xvalues.append(x);
+					bullet_yvalues.append(y);
 ;				}
+			}
+			else if (const sf::Event::MouseMoved* mouseEvt =
+				event->getIf<sf::Event::MouseMoved>())
+			{
+				sf::Vector2f mousePos(mouseEvt->position.x, mouseEvt->position.y);
+				sf::Vector2f handPos = my_hand_sprite.getPosition();
+				float dx = mousePos.x - handPos.x;
+				float dy = mousePos.y - handPos.y;
+				float angle = atan2(dy, dx) * 180.0f / 3.14159f + 180.0f;
+				my_hand_sprite.setRotation(sf::degrees(angle));
 			}
 		}
 
@@ -196,7 +245,6 @@ int main(int argc, char** argv)
 		for (int i = 0; i < circle_xvalues.size(); i++)		// Drawing our text circles
 		{
 			only_text_circle.set_position(circle_xvalues[i], circle_yvalues[i]);
-			//only_text_circle.getRandomColor();
 			only_text_circle.set_text(circle_text[i]);
 			window.draw(only_text_circle.get_circle());
 			window.draw(only_text_circle.get_text());
