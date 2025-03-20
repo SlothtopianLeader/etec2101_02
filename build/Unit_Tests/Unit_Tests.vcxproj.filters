@@ -23,7 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Lab03\array_list.h">
+    <ClInclude Include="cleaned_up_arraylist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="person.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

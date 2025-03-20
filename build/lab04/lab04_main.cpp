@@ -15,12 +15,13 @@ private:
 	sf::Text my_text;		// This MUST have a font when created.
 	sf::CircleShape my_circle;
 	sf::CircleShape my_bullet;
+	sf::RectangleShape my_retangle;
 	sf::Vector2f my_position;
 	float spawnTime = 1.0f;
 	float circleYVelocity = 0.015625;
 public:
 	TextCircle(sf::Font& the_font) : my_text(the_font),   // <- this : syntax passes the value to
-		my_circle(getRandomSize()), my_bullet(20.0f)
+		my_circle(getRandomSize()), my_bullet(20.0f), my_retangle({600.0f, 50.0f})
 	{													// the c'tor.
 		my_position = sf::Vector2f(100.0f, 100.0f);
 		my_circle.setFillColor(RAND_COLOR);
@@ -76,6 +77,11 @@ public:
 		sf::CircleShape circle(radius);
 		circle.setFillColor(RAND_COLOR);
 		return circle;
+	}
+	
+	sf::RectangleShape getRectangle()
+	{
+		return my_retangle;
 	}
 };
 
