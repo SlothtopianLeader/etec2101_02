@@ -23,10 +23,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cleaned_up_arraylist.h">
+    <ClInclude Include="unit_tests_array_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="person.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="array_list_utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

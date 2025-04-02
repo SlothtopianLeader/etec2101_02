@@ -1,280 +1,497 @@
 #include <gtest/gtest.h>
-#include <vector>
-#include "cleaned_up_arraylist.h"
-#include "person.h"
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <iomanip>
+#include "unit_tests_array_list.h"
+#include "array_list_utility.h"
 
+#define EXECUTE_ARRAY_LIST_TESTS 1
+#if EXECUTE_ARRAY_LIST_TESTS
 
-class ArrayListTestFixture : public ::testing::Test {
+// Do you understand the difference betweeen a Fixture (a class derived from ::testing::Test),
+// and a test-function?  They're almost identical -- the advantage of a fixture is you can put
+// common code in there (like making an ArrayList with a few items in it) without having to put
+// that code explicitly in each test case.
+class ArrayListTestFixture : public ::testing::Test
+{
 protected:
-    ssuds::ArrayList<float> slist;
+	void SetUp() override
+	{
+		slist2.append("B");
+		slist2.append("C");
+		slist2.prepend("A");
+		slist2.insert("D", 3);
+	}
 
-    void SetUp() override {
-    }
+	void TearDown() override
+	{
 
-    void TearDown() override {
-        slist.clear();
-    }
+	}
+
+
+	ssuds::ArrayList<std::string> slist1;
+	ssuds::ArrayList<std::string> slist2;
+	ssuds::ArrayList<int> ilist;
 };
+
+TEST_F(ArrayListTestFixture, InitiallyEmpty)
+{
+	EXPECT_EQ(slist1.size(), 0);
+	EXPECT_EQ(ilist.size(), 0);
+}
+
 
 TEST_F(ArrayListTestFixture, AddingItems)
 {
-    ssuds::ArrayList<float> slist;
-    slist.append(2.3f);
-    slist.append(2.6f);
-
-    ASSERT_EQ(slist.size(), 4);
-    EXPECT_EQ(slist[0], "A");
-    EXPECT_EQ(slist[0], "B");
-    EXPECT_EQ(slist[0], "C");
-    EXPECT_EQ(slist[0], "D");
+	ASSERT_EQ(slist2.size(), 4);
+	EXPECT_EQ(slist2[0], "A");
+	EXPECT_EQ(slist2[1], "B");
+	EXPECT_EQ(slist2[2], "C");
+	EXPECT_EQ(slist2[3], "D");
 }
 
-TEST_F(ArrayListTestFixture, InsertingItems)
+
+TEST_F(ArrayListTestFixture, MoreInsert)
 {
-    ssuds::ArrayList<float> slist;
-    slist.insert(1.8f, 0);
-    slist.insert(2.2f, 1);
-    slist.insert(4.2f, 3);
-    EXPECT_FLOAT_EQ(slist.at(0), 1.8f);
-    EXPECT_FLOAT_EQ(slist.at(1), 2.2f);
-    EXPECT_FLOAT_EQ(slist.at(3), 4.2f);
+	slist2.insert("pre_A", 0);			// [pre_A, A, B, C, D]
+	slist2.insert("A2", 2);				// [pre_A, A, A2, B, C, D]
+	slist2.insert("post_D", 6);			// [pre_A, A, A2, B, C, D, post_D]
+
+	EXPECT_EQ(slist2.size(), 7);
+	EXPECT_EQ(slist2.at(0), "pre_A");
+	EXPECT_EQ(slist2.at(1), "A");
+	EXPECT_EQ(slist2.at(2), "A2");
+	EXPECT_EQ(slist2.at(3), "B");
+	EXPECT_EQ(slist2.at(4), "C");
+	EXPECT_EQ(slist2.at(5), "D");
+	EXPECT_EQ(slist2.at(6), "post_D");
 }
 
-TEST_F(ArrayListTestFixture, GrowItems)
+
+TEST_F(ArrayListTestFixture, Growing)
 {
-    ssuds::ArrayList<float> slist;
-
-    EXPECT_EQ(slist.size(), 5);
-    EXPECT_EQ(slist.capacity(), 5);
-
-    slist.append(5.6f);
-    slist.append(2.2f);
-    EXPECT_EQ(slist.size(), 7);
-    EXPECT_GE(slist.capacity(), 10);
-    EXPECT_FLOAT_EQ(slist.at(5), 5.6f);
-    EXPECT_FLOAT_EQ(slist.at(6), 2.2f);
+	EXPECT_EQ(ilist.size(), 0);
+	unsigned int cap = ilist.capacity();
+	for (unsigned int i = 0; i < cap + 1; i++)
+		ilist.append(1);
+	EXPECT_EQ(ilist.size(), cap + 1);
+	EXPECT_GT(ilist.capacity(), cap);
+	cap = ilist.capacity();
+	ilist.clear();
+	EXPECT_LT(ilist.capacity(), cap);
 }
 
-TEST_F(ArrayListTestFixture, Stream)
+
+TEST_F(ArrayListTestFixture, Finding)
 {
-    ssuds::ArrayList<float> slist;
-    EXPECT_EQ(slist.size(), 7);                                     //     [1.8, 2.2, 2.2, 3.6, 4.2, 5.6, 2.2]
+	for (int i : {10, 7, 10, 10, 9, 10, 5, 10})
+		ilist.append(i);
+
+	int index = ilist.find(7);
+	EXPECT_EQ(index, 1);
+	index = ilist.find(10, 0);
+	for (int expected_index : {0, 2, 3, 5, 7})
+	{
+		EXPECT_EQ(index, expected_index);
+		index = ilist.find(10, index + 1);
+	}
+
+	EXPECT_EQ(index, -1);
 }
 
-TEST(ArrayListTestFixture, StreamOperator)
+
+TEST_F(ArrayListTestFixture, Remove)
 {
-    ssuds::ArrayList<std::string> slist;
-    std::stringstream ss;
+	unsigned int cap = slist2.capacity();
+	unsigned int num_added = 0;
+	while (slist2.capacity() == cap)
+	{
+		num_added++;
+		slist2.append("X");
+	}
+	unsigned int s = slist2.size();
+	std::string temp = slist2.remove(0);
+	EXPECT_EQ(temp, "A");
+	EXPECT_EQ(slist2.size(), s - 1);
 
-    ss << slist;
-    EXPECT_EQ(ss.str(), "[]");
+	int num = slist2.remove_all("X", true);
+	EXPECT_EQ(num, num_added);
 
-    ss.str("");
-    slist.append("A");
-
-    ss << slist;        // [A]
-    EXPECT_EQ(ss.str(), "[A]");
-
-    ss.str("");
-    slist.append("B");
-    slist.append("C");
-    slist.append("D");
-    ss << slist;
-    EXPECT_EQ(ss.str(), "[A, B, C, D]");
-    ss.str("");
-    slist.output(ss);
-    EXPECT_EQ(ss.str(), "[A, B, C, D]");
+	// Testing shrink
+	// ...first, make sure we trigger two grows
+	int grows = 0;
+	cap = ilist.capacity();
+	while (grows < 2)
+	{
+		ilist.append(99);
+		if (ilist.capacity() > cap)
+		{
+			grows++;
+			cap = ilist.capacity();
+		}
+	}
+	// Remove the 99's, which should make the list empty
+	ilist.remove_all(99);
+	EXPECT_LT(ilist.capacity(), cap);
 }
 
-TEST_F(ArrayListTestFixture, FindAllItems)
+
+TEST_F(ArrayListTestFixture, Reserve)
 {
-    ssuds::ArrayList<float> slist;
-    int index = slist.find(2.2f, 0);
-
-    // EXPECT_FLOAT_EQ(slist.find(2.2f, index));
-    while (index != -1)
-    {
-        std::cout << "\tFound occurrence of 2.2 at index " << index << "\n";
-        index++;
-        if (index == slist.size())
-            break;
-        index = slist.find(2.2f, index);
-    }
+	unsigned int cap = ilist.capacity();
+	ilist.reserve(cap + 100);
+	EXPECT_GE(ilist.capacity(), cap + 100);
 }
 
-TEST_F(ArrayListTestFixture, RemoveItems)
+
+TEST_F(ArrayListTestFixture, AtVsBrackets)
 {
-    ssuds::ArrayList<float> slist;
-    EXPECT_EQ(slist.size(), 7);
-    EXPECT_GE(slist.capacity(), 10);
-    slist.remove_all(2.2f);
-    EXPECT_EQ(slist.size(), 4);
-    EXPECT_GE(slist.capacity(), 5);
+	EXPECT_EQ(slist2.at(1), "B");
+	EXPECT_EQ(slist2[1], "B");
+	EXPECT_THROW(slist2.at(slist2.size()), std::out_of_range);
+
+	slist2[0] = "Anew";
+	EXPECT_EQ(slist2[0], "Anew");
+	EXPECT_EQ(slist2.at(0), "Anew");
+	slist2.at(0) = "Anew2";
+	EXPECT_EQ(slist2[0], "Anew2");
+	EXPECT_EQ(slist2.at(0), "Anew2");
 }
 
-TEST_F(ArrayListTestFixture, CopyItems)
+
+TEST_F(ArrayListTestFixture, EmptyManualIteration)
 {
-    ssuds::ArrayList<float> slist;
-    ssuds::ArrayList<float> slist2(slist);
-    ssuds::ArrayList<float> slist3 = slist;
-    slist.append(7.7f);
-    slist2[1] = 999.99f;
-    slist3.clear();
-    EXPECT_FLOAT_EQ(slist.at(6), 7.7f);
-    EXPECT_FLOAT_EQ(slist2.at(1), 999.99f);
+	ssuds::ArrayList<std::string>::ArrayListIterator it = slist1.begin();
+	ssuds::ArrayList<std::string>::ArrayListIterator it_end = slist1.end();
+	ASSERT_EQ(it, it_end);
 }
 
-TEST_F(ArrayListTestFixture, Operator1)         // = Operator
+
+TEST_F(ArrayListTestFixture, ManualIteration)
 {
-    ssuds::ArrayList<float> slist;
-    ssuds::ArrayList<float> slist2;
-    ssuds::ArrayList<float> slist3;
-    ssuds::ArrayList<float> slist4;
-
-    slist4 = slist2 = slist;
-    slist.clear();
-    slist3.append(8.8f);
-    slist3.append(9.9f);
-    EXPECT_EQ(slist.size(), 0);
-    EXPECT_EQ(slist3.size(), 2);
+	ssuds::ArrayList<std::string>::ArrayListIterator it = slist2.begin();
+	ssuds::ArrayList<std::string>::ArrayListIterator it_end = slist2.end();
+	std::string val1, val2, val3, val4;
+	ASSERT_NE(it, it_end);
+	val1 = *it;
+	++it;
+	EXPECT_EQ(val1, "A");
+	val2 = *it;
+	++it;
+	val3 = *it;
+	++it;
+	val4 = *it;
+	++it;
+	EXPECT_EQ(val2, "B");
+	EXPECT_EQ(val3, "C");
+	EXPECT_EQ(val4, "D");
+	EXPECT_EQ(it, it_end);
 }
 
-TEST_F(ArrayListTestFixture, Operator2)         // [] Operator
+TEST_F(ArrayListTestFixture, PrettyIteration)
 {
-    ssuds::ArrayList<float> slist;
-    slist[0] = 1.11f;
-    EXPECT_FLOAT_EQ(slist.at(0), 1.11f);
+	int i = 0;
+	for (std::string s : slist2)
+	{
+		if (i == 0)
+			EXPECT_EQ(s, "A");
+		else if (i == 1)
+			EXPECT_EQ(s, "B");
+		else if (i == 2)
+			EXPECT_EQ(s, "C");
+		else
+			EXPECT_EQ(s, "D");
+		i++;
+	}
 }
 
-TEST_F(ArrayListTestFixture, BasicIterator)
+
+TEST_F(ArrayListTestFixture, OS_Stream)
 {
-    ssuds::ArrayList<float> slist2;
-
-    slist2.append(1.11f);
-    slist2.append(2.2f);
-    slist2.append(3.3f);
-    slist2.append(4.4f);
-    slist2.append(5.5f);
-    slist2.append(6.6f);
-    slist2.append(7.7f);
-
-    EXPECT_EQ(slist2.size(), 7);
-    float expectedValues[] = { 1.11f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f };
-    int index = 0;
-    for (float f : slist2)
-    {
-        EXPECT_FLOAT_EQ(f, expectedValues[index]) << "Index does not match." << index;
-        index++;
-    }
-
-    ssuds::ArrayList<float>::ArrayListIterator it = slist2.begin();
-    index = 0;
-    while (it != slist2.end())
-    {
-        EXPECT_FLOAT_EQ(*it, expectedValues[index]) << "Index does not match." << index;
-        ++it;
-        index++;
-    }
-
-    EXPECT_EQ(index, 7);
+	std::stringstream ss;
+	ss << slist1;
+	EXPECT_EQ(ss.str(), "[]");
+	ss.str(std::string());
+	ss << slist2;
+	EXPECT_EQ(ss.str(), "[A, B, C, D]");
 }
 
-TEST_F(ArrayListTestFixture, OtherIterator)         // Finish Me Bruh
+
+TEST_F(ArrayListTestFixture, CopyConstructor)
 {
-    ssuds::ArrayList<float> slist2;
+	ssuds::ArrayList<std::string> slist_copy1 = slist2;
+	ssuds::ArrayList<std::string> slist_copy2(slist2);
+	ASSERT_EQ(slist_copy1.size(), 4);
+	EXPECT_EQ(slist_copy2[0], "A");
+	EXPECT_EQ(slist_copy2[1], "B");
+	EXPECT_EQ(slist_copy2[2], "C");
+	EXPECT_EQ(slist_copy2[3], "D");
+	slist2.remove(0);
+	EXPECT_EQ(slist_copy1.size(), 4);
 
-    slist2.append(1.11f);
-    slist2.append(2.2f);
-    slist2.append(3.3f);
-    slist2.append(4.4f);
-    slist2.append(5.5f);
-    slist2.append(6.6f);
-    slist2.append(7.7f);
-
-    EXPECT_EQ(slist2.size(), 7);
-    float expectedValues[] = { 1.11f, 2.2f, 3.3f, 4.4f, 5.5f, 6.6f, 7.7f };
-    int index = 0;
-    for (float f : slist2)
-    {
-        EXPECT_FLOAT_EQ(f, expectedValues[index]) << "Index does not match." << index;
-        index++;
-    }
-
-    ssuds::ArrayList<float>::ArrayListIterator it = slist2.begin();
-    index = 0;
-    while (it != slist2.end())
-    {
-        EXPECT_FLOAT_EQ(*it, expectedValues[index]) << "Index does not match." << index;
-        ++it;
-        index++;
-    }
-
-    EXPECT_EQ(index, 7);
+	// Same thing, really, but just to make sure...
+	ASSERT_EQ(slist_copy2.size(), 4);
+	EXPECT_EQ(slist_copy2[0], "A");
+	EXPECT_EQ(slist_copy2[1], "B");
+	EXPECT_EQ(slist_copy2[2], "C");
+	EXPECT_EQ(slist_copy2[3], "D");
+	EXPECT_EQ(slist_copy2.size(), 4);
 }
 
-TEST_F(ArrayListTestFixture, ReverseIterator)
+
+TEST_F(ArrayListTestFixture, Assignment)
 {
-    ssuds::ArrayList<float> slist2;
+	ssuds::ArrayList<std::string> slist3;
+	slist3.append("X");
+	ASSERT_EQ(slist3.size(), 1);
+	ASSERT_EQ(slist3[0], "X");
+	slist3 = slist2;
+	ASSERT_EQ(slist3.size(), 4);
+	EXPECT_EQ(slist3[0], "A");
+	EXPECT_EQ(slist3[1], "B");
+	EXPECT_EQ(slist3[2], "C");
+	EXPECT_EQ(slist3[3], "D");
+	slist2.remove(0);
+	EXPECT_EQ(slist3.size(), 4);
 
-    slist2.append(1.11f);
-    slist2.append(2.2f);
-    slist2.append(3.3f);
-    slist2.append(4.4f);
-    slist2.append(5.5f);
-    slist2.append(6.6f);
-    slist2.append(7.7f);
+	// This one is kind of sneaky!
+	// ... make a copy of slist2 manually
+	slist3.clear();
+	for (unsigned int i = 0; i < slist2.size(); i++)
+		slist3.append(slist2[i]);
+	// ... now do the thing
+	slist2 = slist2;		// Could cause problems if not accounted for!
+	// ...slist2 and slist3 should be the same
+	ASSERT_EQ(slist2.size(), slist3.size());
+	for (unsigned int i = 0; i < slist3.size(); i++)
+		EXPECT_EQ(slist2[i], slist3[i]);
 
-    ssuds::ArrayList<float>::ArrayListIterator it = slist.rbegin();
-    int index = 0;
-    while (it != slist2.rend())								//      7.7 6.6 5.5 4.4 3.3 2.2 1.11
-    {
-        EXPECT_FLOAT_EQ(*it, index);
-        ++it;
-        index++;
-    }
-
-    // This is one way to test the move-constructor
-    ssuds::ArrayList<float> slist5(std::move(slist2));
-    EXPECT_EQ(slist2.size(), 0);
-    EXPECT_EQ(slist2.capacity(), 0);
 }
-/*
-TEST_F(ArrayListTestFixture, ReserveItems)
+
+
+TEST_F(ArrayListTestFixture, InitializerListConstructor)
 {
-    std::cout << "\ntest 7 (reserve and Person's):\n=====\n";       // test7 (reserve and Person's)
-    ssuds::ArrayList<example::Person> plist;                        // =====
-    std::cout << "\tplist size=" << plist.size() << "\n";           //     plist size=0
-    std::cout << "\tplist capacity=" << plist.capacity() << "\n";   //     plist capacity=5
-    char temp_string[4] = { 0, 0, 0, 0 };
-    plist.reserve(26);
-    std::cout << "\tplist size=" << plist.size() << "\n";           //     plist size=0
-    std::cout << "\tplist capacity=" << plist.capacity() << "\n";   //     plist capacity=26
-    for (unsigned int i = 0; i < 26; i++)
-    {
-        temp_string[0] = 'A' + i;
-        temp_string[1] = temp_string[2] = 'a' + i;
-        example::Person p(std::string(temp_string), "Smith", 100 + i, i + 0.5f);
-        plist.append(p);
-        plist.at(plist.size() - 1).set_hours_worked(i * 2);
-    }
-    plist.insert(example::Person("---", "###", 5000, 0.0f), 1);
-    std::cout << "\tplist size=" << plist.size() << "\n";           //     plist size=26
-    std::cout << "\tplist capacity=" << plist.capacity() << "\n";   //     plist capacity=26
-    std::cout << std::setprecision(2) << std::fixed;
-    for (unsigned int i = 0; i < plist.size(); i++)                 //     Aaa Smith $0.00
-    {                                                               //     --- ### $0.00
-        example::Person p = plist.at(i);                            //     Bbb Smith $3.00
-        std::cout << "\t" << p.get_name(false) << " ";              //     Ccc Smith $10.00
-        std::cout << " $" << p.get_salary() << "\n";                //     Ddd Smith $21.00
-    }                                                               //     Eee Smith $36.00
-                                                                    //     (more)
-                                                                    //     Zzz Smith $1275.00
-
-#
-    return 0;
+	ssuds::ArrayList<int> test{ 5, 8, 9, 3, 1, 2, 7, 0 };
+	ASSERT_EQ(test.size(), 8);
+	EXPECT_EQ(test[0], 5);
+	EXPECT_EQ(test[1], 8);
+	EXPECT_EQ(test[2], 9);
+	EXPECT_EQ(test[3], 3);
+	EXPECT_EQ(test[4], 1);
+	EXPECT_EQ(test[5], 2);
+	EXPECT_EQ(test[6], 7);
+	EXPECT_EQ(test[7], 0);
 }
-*/
+
+
+ssuds::ArrayList<float> move_func()
+{
+	ssuds::ArrayList<float> result;
+	result.append(3.1f);
+	result.append(4.2f);
+	return result;
+}
+
+TEST_F(ArrayListTestFixture, MoveConstructor)
+{
+	ssuds::ArrayList<float> my_arr = move_func();
+	ASSERT_EQ(my_arr.size(), 2);
+	EXPECT_EQ(my_arr[0], 3.1f);
+	EXPECT_EQ(my_arr[1], 4.2f);
+	my_arr.remove(0);
+	EXPECT_EQ(my_arr.size(), 1);
+}
+
+
+// I'm not sure why this is such a troubling case.  Possibly something to
+// do with the small-string optimizaiton (SSO)?
+TEST_F(ArrayListTestFixture, CustomStrings)
+{
+	std::vector<std::string> vlist;
+	ssuds::ArrayList<std::string> slist;
+	char temp_cstr[4] = { '\0', '\0', '\0', '\0' };
+	for (int i = 0; i < 26; i++)
+	{
+		temp_cstr[0] = temp_cstr[1] = temp_cstr[2] = i + 'a';
+		std::string temp_cpp_str(temp_cstr);
+
+		slist.append(temp_cpp_str);
+		vlist.push_back(temp_cpp_str);
+
+		temp_cstr[0] = temp_cstr[1] = temp_cstr[2] = i + 'A';
+
+		slist.append(temp_cpp_str);
+		vlist.push_back(temp_cpp_str);
+	}
+
+	ASSERT_EQ(vlist.size(), slist.size());
+
+	for (int i = 0; i < vlist.size(); i++)
+		ASSERT_EQ(vlist[i], slist[i]);
+}
+
+TEST_F(ArrayListTestFixture, QuickSort_Ascending)
+{
+	ssuds::ArrayList<int> flist;
+
+	flist.append(8);
+	flist.append(3);
+	flist.append(9);
+	flist.append(6);
+	flist.append(1);
+	flist.append(4);
+	flist.append(2);
+	flist.append(5);
+	flist.append(7);
+
+	quickSort(flist, SortOrder::ASCENDING);
+	EXPECT_EQ(flist[0], 1);
+	EXPECT_EQ(flist[1], 2);
+	EXPECT_EQ(flist[2], 3);
+	EXPECT_EQ(flist[3], 4);
+	EXPECT_EQ(flist[4], 5);
+	EXPECT_EQ(flist[5], 6);
+	EXPECT_EQ(flist[6], 7);
+	EXPECT_EQ(flist[7], 8);
+	EXPECT_EQ(flist[8], 9);
+}
+
+TEST_F(ArrayListTestFixture, QuickSort_Descending)
+{
+	ssuds::ArrayList<int> flist;
+
+	flist.append(8);
+	flist.append(3);
+	flist.append(9);
+	flist.append(6);
+	flist.append(1);
+	flist.append(4);
+	flist.append(2);
+	flist.append(5);
+	flist.append(7);
+
+	quickSort(flist, SortOrder::DESCENDING);
+	EXPECT_EQ(flist[0], 9);
+	EXPECT_EQ(flist[1], 8);
+	EXPECT_EQ(flist[2], 7);
+	EXPECT_EQ(flist[3], 6);
+	EXPECT_EQ(flist[4], 5);
+	EXPECT_EQ(flist[5], 4);
+	EXPECT_EQ(flist[6], 3);
+	EXPECT_EQ(flist[7], 2);
+	EXPECT_EQ(flist[8], 1);
+}
+
+TEST_F(ArrayListTestFixture, BinarySearch_Ascending)
+{
+	ssuds::ArrayList<int> flist;
+
+	flist.append(8);
+	flist.append(3);
+	flist.append(9);
+	flist.append(6);
+	flist.append(1);
+	flist.append(4);
+	flist.append(2);
+	flist.append(5);
+	flist.append(7);
+
+	ssuds::ArrayList<float> random_elements;
+	int size = flist.size();
+
+	for (int i = 0; i < 9; i++)
+		random_elements.append(flist[i]);
+
+	for (int i = 0; i < 9; i++)
+	{
+		int value = random_elements[i];
+		int index = binarySearch(flist, value, SortOrder::ASCENDING);
+		EXPECT_NE(index, -1);
+		EXPECT_EQ(flist[index], value);
+	}
+}
+
+TEST_F(ArrayListTestFixture, BubbleSort_ASCENDING)
+{
+	ssuds::ArrayList<int> flist;
+
+	flist.append(8);
+	flist.append(3);
+	flist.append(9);
+	flist.append(6);
+	flist.append(1);
+	flist.append(4);
+	flist.append(2);
+	flist.append(5);
+	flist.append(7);
+
+	bubbleSort(flist, SortOrder::ASCENDING);
+	EXPECT_EQ(flist[0], 1);
+	EXPECT_EQ(flist[1], 2);
+	EXPECT_EQ(flist[2], 3);
+	EXPECT_EQ(flist[3], 4);
+	EXPECT_EQ(flist[4], 5);
+	EXPECT_EQ(flist[5], 6);
+	EXPECT_EQ(flist[6], 7);
+	EXPECT_EQ(flist[7], 8);
+	EXPECT_EQ(flist[8], 9);
+}
+
+TEST_F(ArrayListTestFixture, BubbleSort_DESCENDING)
+{
+	ssuds::ArrayList<int> flist;
+
+	flist.append(8);
+	flist.append(3);
+	flist.append(9);
+	flist.append(6);
+	flist.append(1);
+	flist.append(4);
+	flist.append(2);
+	flist.append(5);
+	flist.append(7);
+
+	bubbleSort(flist, SortOrder::DESCENDING);
+	EXPECT_EQ(flist[0], 9);
+	EXPECT_EQ(flist[1], 8);
+	EXPECT_EQ(flist[2], 7);
+	EXPECT_EQ(flist[3], 6);
+	EXPECT_EQ(flist[4], 5);
+	EXPECT_EQ(flist[5], 4);
+	EXPECT_EQ(flist[6], 3);
+	EXPECT_EQ(flist[7], 2);
+	EXPECT_EQ(flist[8], 1);
+}
+
+TEST_F(ArrayListTestFixture, Shuffle)
+{
+	ssuds::ArrayList<int> flist;
+
+	flist.append(8);
+	flist.append(3);
+	flist.append(9);
+	flist.append(6);
+	flist.append(1);
+	flist.append(4);
+	flist.append(2);
+	flist.append(5);
+	flist.append(7);
+
+	ssuds::ArrayList<int> temp = flist;
+	shuffle(flist);
+
+	EXPECT_NE(flist, temp);
+	std::sort(flist.begin(), flist.end());
+	EXPECT_EQ(flist, temp);
+}
+
+TEST_F(ArrayListTestFixture, QuickSort_Test)
+{
+	ssuds::ArrayList<int> flist;
+	for (int i = 500; i > 0; i--)
+		flist.append(i);
+
+	quickSort(flist, SortOrder::ASCENDING);
+	
+	for (int i = 0; i < 500; i++)
+		EXPECT_EQ(flist[i], i + 1);
+}
+
+#endif

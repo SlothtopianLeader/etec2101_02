@@ -148,15 +148,15 @@ namespace ssuds
 		// @ OTHER METHODS (alphabetical)            @
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	public:
-		ArrayListIterator begin()
+		typename ArrayList<T>::ArrayListIterator begin()
 		{
-			ArrayListIterator return_value(this, 0);
+			typename ArrayList<T>::ArrayListIterator return_value(this, 0);
 			return return_value;
 		}
 
-		ArrayListIterator end()
+		typename ArrayList<T>::ArrayListIterator end()
 		{
-			ArrayListIterator return_value;
+			typename ArrayList<T>::ArrayListIterator return_value;
 			return return_value;
 		}
 

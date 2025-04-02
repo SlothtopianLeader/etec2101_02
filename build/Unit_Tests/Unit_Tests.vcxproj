@@ -143,7 +143,8 @@
     <ClCompile Include="array_lists_tests_main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cleaned_up_arraylist.h" />
+    <ClInclude Include="array_list_utility.h" />
+    <ClInclude Include="unit_tests_array_list.h" />
     <ClInclude Include="person.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

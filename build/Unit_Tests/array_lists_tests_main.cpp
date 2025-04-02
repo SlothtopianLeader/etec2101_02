@@ -1,12 +1,11 @@
-// Array List Tests main.cpp
-
 #include <gtest/gtest.h>
 #include <vector>
-#include <array_list.h>
+#include <unit_tests_array_list.h>
 #include <string>
+#include "array_list_utility.h"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+	testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
