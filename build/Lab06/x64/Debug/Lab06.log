@@ -1,0 +1,53 @@
+﻿  Lab06_main.cpp
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(120,4): error C3861: 'current_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+      C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(120,4):
+      the template instantiation context (the oldest one first) is
+          C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(11,8):
+          while compiling class template 'ssuds::LinkedList'
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(120,37): error C3861: 'new_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(121,4): error C3861: 'new_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(121,26): error C3861: 'current_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(122,4): error C3861: 'new_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(122,22): error C3861: 'current_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(123,4): error C3861: 'current_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(123,30): error C3861: 'new_node': identifier not found
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(120,4): error C2065: 'current_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(120,37): error C2065: 'new_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(121,4): error C2065: 'new_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(121,26): error C2065: 'current_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(122,4): error C2065: 'new_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(122,22): error C2065: 'current_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(123,4): error C2065: 'current_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  
+C:\etec2101\github_repo_section02\build\Lab06\linked_lists.h(123,30): error C2065: 'new_node': undeclared identifier
+  (compiling source file 'Lab06_main.cpp')
+  

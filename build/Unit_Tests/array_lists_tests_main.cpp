@@ -3,6 +3,7 @@
 #include <unit_tests_array_list.h>
 #include <string>
 #include "array_list_utility.h"
+#include "linked_list.h"
 
 int main(int argc, char** argv)
 {

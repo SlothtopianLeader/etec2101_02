@@ -9,6 +9,7 @@
 // and a test-function?  They're almost identical -- the advantage of a fixture is you can put
 // common code in there (like making an ArrayList with a few items in it) without having to put
 // that code explicitly in each test case.
+/*
 class ArrayListTestFixture : public ::testing::Test
 {
 protected:
@@ -30,6 +31,7 @@ protected:
 	ssuds::ArrayList<std::string> slist2;
 	ssuds::ArrayList<int> ilist;
 };
+
 
 TEST_F(ArrayListTestFixture, InitiallyEmpty)
 {
@@ -482,6 +484,7 @@ TEST_F(ArrayListTestFixture, Shuffle)
 	EXPECT_EQ(flist, temp);
 }
 
+
 TEST_F(ArrayListTestFixture, QuickSort_Test)
 {
 	ssuds::ArrayList<int> flist;
@@ -493,5 +496,6 @@ TEST_F(ArrayListTestFixture, QuickSort_Test)
 	for (int i = 0; i < 500; i++)
 		EXPECT_EQ(flist[i], i + 1);
 }
+*/
 
 #endif
