@@ -115,21 +115,6 @@ namespace ssuds
 			}
 		}
 
-		void insert(const T& val, unsigned int index)
-		{
-			Node* new_node = new Node;
-			new_node->mData = val;
-			new_node->mNext = nullptr;
-			new_node->mPrevious = nullptr;
-
-			current_node->mPrevious->mNext = new_node;
-			new_node->mPrevious = current_node->mPrevious;
-			new_node->mNext = current_node;
-			current_node->mPrevious = new_node;
-
-			mSize++;
-		}
-
 		T& operator[](unsigned int index)
 		{
 			if (index >= mSize)
@@ -142,6 +127,48 @@ namespace ssuds
 				current_node = current_node->mNext;
 			}
 			return current_node->mData;
+		}
+
+		void insert(const T& val, unsigned int index)
+		{
+			if (index > mSize)
+			{
+				throw std::out_of_range("Invalid index");
+			}
+
+			if (index == 0)			// Beginning
+			{
+				Node* new_node = new Node;
+				new_node->mData = val;
+				new_node->mPrevious = nullptr;
+				new_node->mNext = mStart;
+
+				if (mStart != nullptr)
+					mEnd = new_node;
+				mSize++;
+				return;
+			}
+
+			if (index == mSize)		// End
+			{
+				append(val);
+				return;
+			}
+			Node* current_node = mStart;
+			for (unsigned int i = 0; i < index; i++)
+			{
+				current_node = current_node->mNext;
+			}
+
+			Node* new_node = new Node;
+			new_node->mData = val;
+
+			new_node->mPrevious = current_node->mPrevious;
+			new_node->mNext = current_node;
+			current_node->mPrevious->mNext = new_node;
+			current_node->mPrevious = new_node;
+
+			mSize++;
 		}
 
 		void output(std::ostream& os)

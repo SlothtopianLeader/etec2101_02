@@ -128,17 +128,48 @@ namespace ssuds
 			}
 			return current_node->mData;
 		}
-		/*
+
 		void insert(const T& val, unsigned int index)
 		{
-			current_node->mPrevious->mNext = new_node;
+			if (index > mSize)
+			{
+				throw std::out_of_range("Invalid index");
+			}
+
+			if (index == 0)			// Beginning
+			{
+				Node* new_node = new Node;
+				new_node->mData = val;
+				new_node->mPrevious = nullptr;
+				new_node->mNext = mStart;
+
+				if (mStart != nullptr)
+					mEnd = new_node;
+				mSize++;
+				return;
+			}
+
+			if (index == mSize)		// End
+			{
+				append(val);
+				return;
+			}
+			Node* current_node = mStart;
+			for (unsigned int i = 0; i < index; i++)
+			{
+				current_node = current_node->mNext;
+			}
+
+			Node* new_node = new Node;
+			new_node->mData = val;
+
 			new_node->mPrevious = current_node->mPrevious;
 			new_node->mNext = current_node;
+			current_node->mPrevious->mNext = new_node;
 			current_node->mPrevious = new_node;
-
+			
 			mSize++;
 		}
-		*/
 
 		void output(std::ostream& os)
 		{
@@ -163,10 +194,10 @@ namespace ssuds
 				delete temp;
 				temp = tnext;
 			}
-			// Add some more
-			// Note that once you finish clear method
-			// ... you can call it in the destructor.
+			mStart = mEnd = nullptr;
+			mSize = 0;
 		}
+
 		LinkedListIterator begin() const
 		{
 			return LinkedListIterator(mStart, LinkedListIteratorType::FORWARD);

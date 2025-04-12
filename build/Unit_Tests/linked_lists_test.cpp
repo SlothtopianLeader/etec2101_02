@@ -16,7 +16,7 @@ protected:
 		slist2.append("B");
 		slist2.append("C");
 		slist2.prepend("A");
-		//slist2.insert("D", 3);
+		slist2.insert("D", 3);
 	}
 
 	void TearDown() override
@@ -38,6 +38,6 @@ TEST_F(LinkedListTestFixture, AddingItems)
 	EXPECT_EQ(slist2[0], "A");
 	EXPECT_EQ(slist2[1], "B");
 	EXPECT_EQ(slist2[2], "C");
-	//EXPECT_EQ(slist2[3], "D");
+	EXPECT_EQ(slist2[3], "D");
 }
 #endif
