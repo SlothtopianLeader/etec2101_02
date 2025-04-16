@@ -35,6 +35,10 @@ namespace ssuds
 				mCurrentNode = startNode;
 				mType = type;
 			}
+			Node* getNode() const
+			{
+				return mCurrentNode;
+			}
 			bool operator != (const LinkedListIterator& other)
 			{
 				return this->mCurrentNode != other.mCurrentNode;
@@ -56,18 +60,58 @@ namespace ssuds
 					mCurrentNode = mCurrentNode->mPrevious;
 				}
 			}
+
+			LinkedListIterator operator+(int offset) const
+			{
+				LinkedListIterator temp = *this;
+				for (int i = 0; i < offset && temp.mCurrentNode != nullptr; ++i)
+				{
+					temp.mCurrentNode = temp.mCurrentNode->mNext;
+				}
+				return temp;
+			}
+
+			LinkedListIterator operator-(int offset) const
+			{
+				return (*this) + (-offset);
+			}
+
+			bool operator==(const LinkedListIterator& other) const
+			{
+				return mLinkedListPtr == other.mLinkedListPtr && mCurrentIndex == other.mCurrentIndex;
+			}
+
+			friend class LinkedList;
 		};
 	private:
 		unsigned int mSize;
 		Node* mStart;
 		Node* mEnd;
 	public:
+		// default constructor
 		LinkedList()
 		{
 			mSize = 0;
 			mStart = nullptr;
 			mEnd = nullptr;
 		}
+
+		// copy constructor
+		LinkedList(const LinkedList& other) : mSize(0), mStart(nullptr), mEnd(nullptr)
+		{
+			Node* current_node = other.mStart;
+			while (current_node != nullptr)
+			{
+				this->append(current_node->mData);
+				current_node = current_node->mNext;
+			}
+		}
+
+		// Destructor
+		~LinkedList()
+		{
+		}
+	
 		void append(const T& val)
 		{
 			if (mSize == 0)
@@ -115,6 +159,19 @@ namespace ssuds
 			}
 		}
 
+		T& at(const unsigned int index) const
+		{
+			if (index >= mSize)
+				throw std::out_of_range("Invalid index (" + std::to_string(index) + ")");
+			Node* current_node = mStart;
+			for (unsigned int i = 0; i < index; ++i)
+			{
+				current_node = current_node->mNext;
+			}
+			return current_node->mData;
+		}
+		
+
 		T& operator[](unsigned int index)
 		{
 			if (index >= mSize)
@@ -129,6 +186,12 @@ namespace ssuds
 			return current_node->mData;
 		}
 
+		friend std::ostream& operator <<(std::ostream& os, const LinkedList& slist)
+		{
+			slist.output(os);
+			return os;
+		}
+
 		void insert(const T& val, unsigned int index)
 		{
 			if (index > mSize)
@@ -136,38 +199,39 @@ namespace ssuds
 				throw std::out_of_range("Invalid index");
 			}
 
+			Node* new_node = new Node{ val, nullptr, nullptr };
+
 			if (index == 0)			// Beginning
 			{
-				Node* new_node = new Node;
-				new_node->mData = val;
-				new_node->mPrevious = nullptr;
 				new_node->mNext = mStart;
-
-				if (mStart != nullptr)
+				if (mStart)
+					mStart->mPrevious = new_node;
+				mStart = new_node;
+				if (mSize == 0)
 					mEnd = new_node;
-				mSize++;
-				return;
 			}
 
-			if (index == mSize)		// End
+			else if (index == mSize)		// End
 			{
 				append(val);
 				return;
 			}
-			Node* current_node = mStart;
-			for (unsigned int i = 0; i < index; i++)
+
+			else
 			{
-				current_node = current_node->mNext;
+				Node* current_node = mStart;
+				for (unsigned int i = 0; i < index; i++)
+				{
+					current_node = current_node->mNext;
+				}
+				new_node->mNext = current_node;
+				new_node->mPrevious = current_node->mPrevious;
+				if (current_node->mPrevious)
+				{
+					current_node->mPrevious->mNext = new_node;
+				}
+				current_node->mPrevious = new_node;
 			}
-
-			Node* new_node = new Node;
-			new_node->mData = val;
-
-			new_node->mPrevious = current_node->mPrevious;
-			new_node->mNext = current_node;
-			current_node->mPrevious->mNext = new_node;
-			current_node->mPrevious = new_node;
-			
 			mSize++;
 		}
 
@@ -208,19 +272,130 @@ namespace ssuds
 			return LinkedListIterator(nullptr, LinkedListIteratorType::FORWARD);
 		}
 
+		/// <summary>
+		/// Finds the index of the first occurrence of the given value
+		/// </summary>
+		/// <param name="val">the value to search for</param>
+		/// <param name="start_index">the index to start searching at</param>
+		/// <returns></returns>
 		int find(const T& val, const unsigned int start_index = 0) const
 		{
 			// Find method using index
+			if (start_index < 0 || start_index >= mSize)
+			{
+				throw std::out_of_range("Index is out of bounds");
+			}
+			Node* current_node = mStart;
+			for (unsigned int i = 0; i < start_index; ++i)
+			{
+				current_node = current_node->mNext;
+			}
+			return current_node->mData;
 		}
 
+		/// <summary>
+		/// Like the find method above, but using iterators
+		/// </summary>
+		/// <param name="val">The value to search for</param>
+		/// <param name="start">Either begin, rbegin, or some other iterator to initialize the search</param>
+		/// <returns>And end iterator or rend/end iterator value if not found</returns>
 		LinkedListIterator find(const T& val, const LinkedListIterator& start) const
 		{
-			// Find method using iterator
+			if (start.mLinkedListPtr != this)
+				throw std::runtime_error("iterator must be based on this LinkedList");
+
+			LinkedListIterator temp = begin();
+			LinkedListIterator ender;
+
+			if (start.mType == LinkedListIteratorType::FORWARD)
+				ender = end();
+			else
+				ender = rend();
+
+			while (temp != ender)
+			{
+				if (*temp == val)
+					return temp;
+				++temp;
+			}
+			return temp;
 		}
 
 		unsigned int size() const
 		{
 			return mSize;
+		}
+
+		LinkedListIterator rbegin() const
+		{
+			return LinkedListIterator(mEnd, LinkedListIteratorType::BACKWARDS);
+		}
+
+		LinkedListIterator rend() const
+		{
+			return LinkedListIterator(nullptr, LinkedListIteratorType::BACKWARDS);
+		}
+		/// <summary>
+		/// Removes a item at the given index
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns>the item that was removed</returns>
+		T removeByIndex(int index)
+		{
+			if (index >= mSize || index < 0)
+				throw std::out_of_range("Index is out of bounds");
+			Node* current_node = mStart;
+			for (int i = 0; i < index; ++i)
+			{
+				current_node = current_node->mNext;
+			}
+
+			if (current_node->mPrevious)
+			{
+				current_node->mPrevious->mNext = current_node->mNext;
+			}
+			else
+			{
+				mStart = current_node->mNext;
+			}
+
+			if (current_node->mNext)
+			{
+				current_node->mNext->mPrevious = current_node->mPrevious;
+			}
+			else
+			{
+				mEnd = current_node->mPrevious;
+			}
+			delete current_node;
+			mSize--;
+		}
+
+		/// <summary>
+		/// Removes an item using an iterator
+		/// </summary>
+		/// <param name="pos"></param>
+		/// <returns></returns>
+		T removeByIterator(const LinkedListIterator& pos)
+		{
+			Node* removeNode = pos.getNode();
+			if (!removeNode)
+				throw std::runtime_error("Invalid iterator");
+			T val = removeNode->mData;
+
+			if (removeNode->mPrevious)
+				removeNode->mPrevious->mNext = removeNode->mNext;
+			else
+				mStart = removeNode->mNext;
+
+			if (removeNode->mNext)
+				removeNode->mNext->mPrevious = removeNode->mPrevious;
+			else
+				mEnd = removeNode->mPrevious;
+
+			delete removeNode;
+			mSize--;
+			return val;
 		}
 	};
 }
