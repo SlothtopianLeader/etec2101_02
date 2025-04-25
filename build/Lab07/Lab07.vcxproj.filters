@@ -15,33 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="array_lists_tests_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="array_list_tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="linked_lists_test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ordered_set_tests.cpp">
+    <ClCompile Include="Lab07_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="unit_tests_array_list.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="person.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="array_list_utility.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="linked_list.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ordered_set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="arraylist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

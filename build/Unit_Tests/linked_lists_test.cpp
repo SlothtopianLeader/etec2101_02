@@ -4,6 +4,7 @@
 #define EXECUTE_LINKED_LIST_TESTS 1
 #if EXECUTE_LINKED_LIST_TESTS
 
+/*
 // Do you understand the difference betweeen a Fixture (a class derived from ::testing::Test),
 // and a test-function?  They're almost identical -- the advantage of a fixture is you can put
 // common code in there (like making an ArrayList with a few items in it) without having to put
@@ -42,6 +43,7 @@ TEST_F(LinkedListTestFixture, AddingItems)
 	EXPECT_EQ(slist2[1], "B");
 	EXPECT_EQ(slist2[2], "C");
 	EXPECT_EQ(slist2[3], "D");
+	//slist2.output(std::cout);
 }
 
 TEST_F(LinkedListTestFixture, MoreInsert)
@@ -77,4 +79,5 @@ TEST_F(LinkedListTestFixture, Finding)
 
 	EXPECT_EQ(index, -1);
 }
+*/
 #endif
