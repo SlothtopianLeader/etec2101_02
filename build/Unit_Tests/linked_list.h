@@ -52,21 +52,11 @@ namespace ssuds
 			/// <param name="type"></param>
 			LinkedListIterator(Node* startNode, LinkedListIteratorType type = LinkedListIteratorType::FORWARD)
 			{
-				// intentionally empty
-			}
-
-			/// <summary>
-			/// The main constructor
-			/// </summary>
-			/// <param name="startNode"></param>
-			/// <param name="type"></param>
-			/*
-			LinkedListIterator(Node* startNode, LinkedListIteratorType type = LinkedListIteratorType::FORWARD)
-			{
 				mCurrentNode = startNode;
+				mCurrentIndex = 0;
 				mType = type;
+				mLinkedListPtr = nullptr;
 			}
-			*/
 
 			Node* getNode() const
 			{
@@ -292,7 +282,7 @@ namespace ssuds
 		/// </summary>
 		/// <param name="other"></param>
 		/// <returns>*this</returns>
-		T& operator=(const LinkedList& other)
+		LinkedList& operator=(const LinkedList& other)
 		{
 			if (this == &other)
 				return *this;
@@ -444,7 +434,7 @@ namespace ssuds
 		int find(const T& val, const unsigned int start_index = 0) const
 		{
 			// Find method using index
-			if (start_index < 0 || start_index >= mSize)
+			if (start_index >= mSize)
 			{
 				throw std::out_of_range("Index is out of bounds");
 			}
@@ -453,7 +443,15 @@ namespace ssuds
 			{
 				current_node = current_node->mNext;
 			}
-			return current_node->mData;
+			unsigned int index = start_index;
+			while (current_node != nullptr)
+			{
+				if (current_node->mData == val)
+					return index;
+				current_node = current_node->mNext;
+				index++;
+			}
+			return -1;
 		}
 
 		/// <summary>
@@ -575,9 +573,21 @@ namespace ssuds
 			return val;
 		}
 
-		T remove_all()
+		/// <summary>
+		/// This removes all the nodes from the list
+		/// </summary>
+		/// <returns></returns>
+		void remove_all()
 		{
-			// Finish Me!
+			Node* current_node = mStart;
+			while (current_node != nullptr)
+			{
+				Node* next_node = current_node->mNext;
+				delete current_node;
+				current_node = next_node;
+			}
+			mStart = nullptr;
+			mEnd = nullptr;
 		}
 	};
 }

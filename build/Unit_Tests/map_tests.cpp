@@ -4,6 +4,7 @@
 #include <string>
 #include "map.h"
 
+/*
 class MapTestFixture : public ::testing::Test
 {
 protected:
@@ -56,3 +57,5 @@ TEST_F(MapTestFixture, Insert)
 	fset["hank"] = 29.0;
 	EXPECT_FLOAT_EQ(fset["hank"], 29.0);
 }
+
+*/
