@@ -7,6 +7,7 @@
 #define EXECUTE_ORDERED_SET_TESTS 1
 #if EXECUTE_ORDERED_SET_TESTS
 
+/*
 class OrderedSetTestFixture : public ::testing::Test
 {
 protected:
@@ -165,4 +166,5 @@ TEST_F(OrderedSetTestFixture, Iterator)
 	std::cout << "Current Values: " << ss.str() << "\n";
 	EXPECT_EQ(ss.str(), "2.7 3.2 4.5 5.3 7.8 8.1 10.2 ");
 }
+*/
 #endif

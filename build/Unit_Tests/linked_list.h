@@ -192,6 +192,7 @@ namespace ssuds
 		/// </summary>
 		~LinkedList()
 		{
+			clear();
 		}
 		
 		/// <summary>
@@ -284,6 +285,45 @@ namespace ssuds
 				current_node = current_node->mNext;
 			}
 			return current_node->mData;
+		}
+
+		/// <summary>
+		/// This is my assignment operator 
+		/// </summary>
+		/// <param name="other"></param>
+		/// <returns>*this</returns>
+		T& operator=(const LinkedList& other)
+		{
+			if (this == &other)
+				return *this;
+
+			while (mStart)
+			{
+				Node* temp = mStart;
+				mStart = mStart->mNext;
+				delete temp;
+			}
+			mStart = mEnd = nullptr;
+
+			Node* current_node = other.mStart;
+			Node* prev_node = current_node;
+			while (current_node)
+			{
+				Node* new_node = new Node(current_node->mData);
+				if (!mStart)
+				{
+					mStart = new_node;
+					mEnd = new_node;
+				}
+				else
+				{
+					mEnd->mNext = new_node;
+					new_node->mPrevious = mEnd;
+					mEnd = new_node;
+				}
+				current_node = current_node->mNext;
+			}
+			return *this;
 		}
 
 		friend std::ostream& operator <<(std::ostream& os, const LinkedList& slist)
@@ -533,6 +573,11 @@ namespace ssuds
 			delete removeNode;
 			mSize--;
 			return val;
+		}
+
+		T remove_all()
+		{
+			// Finish Me!
 		}
 	};
 }

@@ -146,6 +146,7 @@
     <ClCompile Include="array_list_tests.cpp" />
     <ClCompile Include="array_lists_tests_main.cpp" />
     <ClCompile Include="linked_lists_test.cpp" />
+    <ClCompile Include="map_tests.cpp" />
     <ClCompile Include="ordered_set_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +155,7 @@
     <ClInclude Include="ordered_set.h" />
     <ClInclude Include="unit_tests_array_list.h" />
     <ClInclude Include="person.h" />
+    <ClInclude Include="map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
